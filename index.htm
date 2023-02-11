@@ -107,23 +107,26 @@
        serverNameElement.innerHTML = data.name;
        serverMemberCountElement.innerHTML = `Member Count: ${data.member_count || 0}`;
        errorMessageElement.innerHTML = '';
-       errorMessageElement.style.color = 'black';
+       errorMessageElement.style.color = 'blue';
        serverInfoContainer.style.display = 'block';
        lastUpdateTimeElement.innerHTML = `Last Updated: ${new Date().toLocaleString()}`;
      })
      .catch(error => {
-       serverNameElement.innerHTML = 'ウィジェットが無効になっています';
+       serverNameElement.innerHTML = `ウィジェットが無効になっているか、サーバーは削除された可能性があります(${new Date().toLocaleString()})`;
        serverMemberCountElement.innerHTML = '';
-       errorMessageElement.innerHTML = `${error.message} (${new Date().toLocaleString()})`;
-       errorMessageElement.style.color = 'red';
+       errorMessageElement.innerHTML = error.message;
+       errorMessageElement.style.color = 'blue';
        serverInfoContainer.style.display = 'block';
-       lastUpdateTimeElement.innerHTML = `Last Updated: ${new Date().toLocaleString()}`;
+       lastUpdateTimeElement.innerHTML = '';
        clearInterval(intervalId);
      });
  }
- 
+ document.getElementById("update-button").addEventListener("click", function() {
+  this.innerHTML = "...";
+  this.disabled = true;
+});
+
  </script>
- 
 
 </body>
 </html>
