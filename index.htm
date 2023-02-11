@@ -78,55 +78,57 @@
 </div>
 <script>
   const updateButton = document.getElementById('update-button');
- const serverInfoContainer = document.querySelector('.server-info');
- const serverNameElement = document.getElementById('server-name');
- const serverMemberCountElement = document.getElementById('server-member-count');
- const errorMessageElement = document.getElementById('error-message');
- const lastUpdateTimeElement = document.getElementById('last-update-time');
- 
- let intervalId = setInterval(fetchServerInfo, 1000 * 60 * 1);
- 
- updateButton.addEventListener('click', () => {
-   clearInterval(intervalId);
-   fetchServerInfo();
-   intervalId = setInterval(fetchServerInfo, 1000 * 60 * 1);
- });
- 
- function fetchServerInfo() {
-   const serverIdInput = document.getElementById('server-id-input');
-   const serverId = serverIdInput.value;
- 
-   fetch(`https://discord.com/api/guilds/${serverId}/widget.json`)
-     .then(response => {
-       if (!response.ok) {
-         throw new Error('Server information could not be retrieved.');
-       }
-       return response.json();
-     })
-     .then(data => {
-       serverNameElement.innerHTML = data.name;
-       serverMemberCountElement.innerHTML = `Member Count: ${data.member_count || 0}`;
-       errorMessageElement.innerHTML = '';
-       errorMessageElement.style.color = 'blue';
-       serverInfoContainer.style.display = 'block';
-       lastUpdateTimeElement.innerHTML = `Last Updated: ${new Date().toLocaleString()}`;
-     })
-     .catch(error => {
-       serverNameElement.innerHTML = `ウィジェットが無効になっているか、サーバーは削除された可能性があります(${new Date().toLocaleString()})`;
-       serverMemberCountElement.innerHTML = '';
-       errorMessageElement.innerHTML = error.message;
-       errorMessageElement.style.color = 'blue';
-       serverInfoContainer.style.display = 'block';
-       lastUpdateTimeElement.innerHTML = '';
-       clearInterval(intervalId);
-     });
- }
- document.getElementById("update-button").addEventListener("click", function() {
-  this.innerHTML = "...";
-  this.disabled = true;
-});
+  const serverInfoContainer = document.querySelector('.server-info');
+  const serverNameElement = document.getElementById('server-name');
+  const serverMemberCountElement = document.getElementById('server-member-count');
+  const errorMessageElement = document.getElementById('error-message');
+  const lastUpdateTimeElement = document.getElementById('last-update-time');
+  
+  let intervalId = setInterval(fetchServerInfo, 1000 * 60 * 1);
+  
+  updateButton.addEventListener('click', () => {
+    clearInterval(intervalId);
+    fetchServerInfo();
+    intervalId = setInterval(fetchServerInfo, 1000 * 60 * 1);
+  });
+  
+  function fetchServerInfo() {
+    const serverIdInput = document.getElementById('server-id-input');
+    const serverId = serverIdInput.value;
+  
+    fetch(`https://discord.com/api/guilds/${serverId}/widget.json`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Server information could not be retrieved.');
+        }
+        return response.json();
+      })
+      .then(data => {
+        serverNameElement.innerHTML = data.name;
+        serverMemberCountElement.style.display = 'none';
+        errorMessageElement.innerHTML = '';
+        errorMessageElement.style.color = 'blue';
+        serverInfoContainer.style.display = 'block';
+        const fourMinutesAgo = new Date(Date.now() - 1000 * 60 * 4 + 9 * 60 * 60 * 1000);
+        lastUpdateTimeElement.innerHTML = `Last Updated: ${fourMinutesAgo.toLocaleString()}`;
+      })
+      .catch(error => {
+        const fourMinutesAgo = new Date(Date.now() - 1000 * 60 * 4 + 9 * 60 * 60 * 1000);
+        serverNameElement.innerHTML = `ウィジェットが無効化されたか、サーバーは削除されました(${fourMinutesAgo.toLocaleString()})`;
+        serverMemberCountElement.style.display = 'none';
+        errorMessageElement.innerHTML = error.message + `(${fourMinutesAgo.toLocaleString()})`;
+        errorMessageElement.style.color = 'red';
+        serverInfoContainer.style.display = 'block';
+        lastUpdateTimeElement.innerHTML = '';
+        clearInterval(intervalId);
+      });
+  }
+  document.getElementById("update-button").addEventListener("click", function() {
+    this.innerHTML = "...";
+    this.disabled = true;
+  });
+</script>
 
- </script>
 
 </body>
 </html>
