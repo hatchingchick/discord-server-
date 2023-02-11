@@ -109,12 +109,12 @@
         errorMessageElement.innerHTML = '';
         errorMessageElement.style.color = 'blue';
         serverInfoContainer.style.display = 'block';
-        const fourMinutesAgo = new Date(Date.now() - 1000 * 60 * 4 + 9 * 60 * 60 * 1000);
-        lastUpdateTimeElement.innerHTML = `Last Updated: ${fourMinutesAgo.toLocaleString()}`;
+        const fourMinutesAgo = new Date(Date.now() - 1000 * 60 * 4);
+lastUpdateTimeElement.innerHTML = `Last Updated: ${fourMinutesAgo.toLocaleString()}`;
       })
       .catch(error => {
-        const fourMinutesAgo = new Date(Date.now() - 1000 * 60 * 4 + 9 * 60 * 60 * 1000);
-        serverNameElement.innerHTML = `ウィジェットが無効化されたか、サーバーは削除されました(${fourMinutesAgo.toLocaleString()})`;
+        const fourMinutesAgo = new Date(Date.now() - 1000 * 60 * 4);
+        serverNameElement.innerHTML = `<strong style="color: blue; font-size: 20px;">ウィジェットが無効化されたか、サーバーは削除されました</strong> (${fourMinutesAgo.toLocaleString()})`;
         serverMemberCountElement.style.display = 'none';
         errorMessageElement.innerHTML = error.message + `(${fourMinutesAgo.toLocaleString()})`;
         errorMessageElement.style.color = 'red';
@@ -128,7 +128,6 @@
     this.disabled = true;
   });
 </script>
-
 
 </body>
 </html>
