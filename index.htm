@@ -105,21 +105,21 @@
      })
      .then(data => {
        serverNameElement.innerHTML = data.name;
-       serverMemberCountElement.innerHTML = `Member Count: ${data.member_count}`;
+       serverMemberCountElement.innerHTML = `Member Count: ${data.member_count || 0}`;
        errorMessageElement.innerHTML = '';
        errorMessageElement.style.color = 'black';
        serverInfoContainer.style.display = 'block';
        lastUpdateTimeElement.innerHTML = `Last Updated: ${new Date().toLocaleString()}`;
      })
      .catch(error => {
-   serverNameElement.innerHTML = 'ウィジェットが無効になっています';
-   serverMemberCountElement.innerHTML = '';
-   errorMessageElement.innerHTML = 'このサーバーは削除されたかウィジェットが無効になっている可能性があります';
-   errorMessageElement.style.color = 'red';
-   serverInfoContainer.style.display = 'block';
-   lastUpdateTimeElement.innerHTML = `Last Updated: ${new Date().toLocaleString()} - Error Occurred at: ${new Date().toLocaleString()}`;
-   clearInterval(intervalId);
- });
+       serverNameElement.innerHTML = 'ウィジェットが無効になっています';
+       serverMemberCountElement.innerHTML = '';
+       errorMessageElement.innerHTML = `${error.message} (${new Date().toLocaleString()})`;
+       errorMessageElement.style.color = 'red';
+       serverInfoContainer.style.display = 'block';
+       lastUpdateTimeElement.innerHTML = `Last Updated: ${new Date().toLocaleString()}`;
+       clearInterval(intervalId);
+     });
  }
  
  </script>
