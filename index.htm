@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Discord Server Info</title>
+  <style>
+    body {
+      background-image: url('https://ramune-material.com/wp-content/uploads/2022/03/cyber-circle_A_04.png');
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+    }
+    .server-info-container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      width: 500px;
+      margin-top: 50px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    #server-id-input {
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      border: none;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    }
+    #update-button {
+      padding: 10px 20px;
+      background-color: dodgerblue;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    }
+    #update-button:hover {
+      background-color: deepskyblue;
+    }
+    #error-message {
+      color: red;
+      display: none;
+      margin-top: 20px;
+    }
+    .server-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .error-message {
+  color: red;
+  font-weight: bold;
+}
+
+  </style>
+</head>
+<body>
+  <div class="server-info-container">
+    <h2>Enter Server ID</h2>
+    <input type="text" id="server-id-input">
+  <button id="update-button">Get Server Info</button>
+<div class="server-info" style="display: none;">
+  <p id="server-name"></p>
+  <p id="server-member-count"></p>
+</div>
+<p id="error-message" style="display: none; color: red;"></p>
+<p id="last-update-time" style="display: none;"></p>
+<div class="server-info">
+  <div id="server-name"></div>
+  <div id="server-member-count"></div>
+  <div id="error-message" class="error-message"></div>
+  <div id="last-update-time"></div>
+</div>
+<script>
+  const updateButton = document.getElementById('update-button');
+ const serverInfoContainer = document.querySelector('.server-info');
+ const serverNameElement = document.getElementById('server-name');
+ const serverMemberCountElement = document.getElementById('server-member-count');
+ const errorMessageElement = document.getElementById('error-message');
+ const lastUpdateTimeElement = document.getElementById('last-update-time');
+ 
+ let intervalId = setInterval(fetchServerInfo, 1000 * 60 * 1);
+ 
+ updateButton.addEventListener('click', () => {
+   clearInterval(intervalId);
+   fetchServerInfo();
+   intervalId = setInterval(fetchServerInfo, 1000 * 60 * 1);
+ });
+ 
+ function fetchServerInfo() {
+   const serverIdInput = document.getElementById('server-id-input');
+   const serverId = serverIdInput.value;
+ 
+   fetch(`https://discord.com/api/guilds/${serverId}/widget.json`)
+     .then(response => {
+       if (!response.ok) {
+         throw new Error('Server information could not be retrieved.');
+       }
+       return response.json();
+     })
+     .then(data => {
+       serverNameElement.innerHTML = data.name;
+       serverMemberCountElement.innerHTML = `Member Count: ${data.member_count}`;
+       errorMessageElement.innerHTML = '';
+       errorMessageElement.style.color = 'black';
+       serverInfoContainer.style.display = 'block';
+       lastUpdateTimeElement.innerHTML = `Last Updated: ${new Date().toLocaleString()}`;
+     })
+     .catch(error => {
+   serverNameElement.innerHTML = 'ウィジェットが無効になっています';
+   serverMemberCountElement.innerHTML = '';
+   errorMessageElement.innerHTML = 'このサーバーは削除されたかウィジェットが無効になっている可能性があります';
+   errorMessageElement.style.color = 'red';
+   serverInfoContainer.style.display = 'block';
+   lastUpdateTimeElement.innerHTML = `Last Updated: ${new Date().toLocaleString()} - Error Occurred at: ${new Date().toLocaleString()}`;
+   clearInterval(intervalId);
+ });
+ }
+ 
+ </script>
+ 
+
+</body>
+</html>
