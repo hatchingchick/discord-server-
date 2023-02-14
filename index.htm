@@ -106,6 +106,13 @@
       clearInterval(intervalId);
       fetchServerInfo();
       intervalId = setInterval(fetchServerInfo, 1000 * 60 * 1);
+      if (Notification.permission !== 'granted') {
+        Notification.requestPermission().then(permission => {
+          if (permission === 'granted') {
+            const notification = new Notification('通知が許可されました。');
+          }
+        });
+      }
     });
     
     function fetchServerInfo() {
@@ -143,19 +150,12 @@
             const notification = new Notification('成功', {
               body: errorMessage,
             });
-          } else if (Notification.permission !== 'denied') {
-            Notification.requestPermission().then(permission => {
-              if (permission === 'granted') {
-                const notification = new Notification('成功', {
-                  body: errorMessage,
-                });
-              }
-            });
           }
         });
     }
 
 </script>
+
 
 </body>
 </html>
