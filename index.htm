@@ -147,7 +147,7 @@
           clearInterval(intervalId);
           // エラーメッセージを通知として送信
           if (Notification.permission === 'granted') {
-            const notification = new Notification('成功', {
+            const notification = new Notification('Server info Counterからの通知', {
               body: errorMessage,
             });
           }
