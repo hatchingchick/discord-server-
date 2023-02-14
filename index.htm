@@ -106,7 +106,7 @@ let serverName = "";
 
 updateButton.addEventListener('click', () => {
   clearInterval(intervalId);
-  updateButton.textContent = "サーバーを監視中...";
+  updateButton.textContent = "…";
   fetchServerInfo();
   intervalId = setInterval(fetchServerInfo, 1000 * 60 * 1);
   if (Notification.permission !== 'granted') {
