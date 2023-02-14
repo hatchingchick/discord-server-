@@ -106,7 +106,7 @@ let serverName = "";
 
 updateButton.addEventListener('click', () => {
   clearInterval(intervalId);
-  updateButton.textContent = "…";
+  updateButton.textContent = "リセット";
   fetchServerInfo();
   intervalId = setInterval(fetchServerInfo, 1000 * 60 * 1);
   if (Notification.permission !== 'granted') {
