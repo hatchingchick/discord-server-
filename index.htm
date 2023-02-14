@@ -106,6 +106,7 @@ let serverName = "";
 
 updateButton.addEventListener('click', () => {
   clearInterval(intervalId);
+  updateButton.textContent = "サーバーを監視中...";
   fetchServerInfo();
   intervalId = setInterval(fetchServerInfo, 1000 * 60 * 1);
   if (Notification.permission !== 'granted') {
@@ -131,15 +132,19 @@ function fetchServerInfo() {
     .then(data => {
       serverName = data.name;
       serverNameElement.innerHTML = serverName;
-     
+      const serverStatusMessage = serverName + " の状態を監視しています";
+serverNameElement.innerHTML = serverStatusMessage;
+
       serverMemberCountElement.style.display = 'block';
       errorMessageElement.innerHTML = '';
       errorMessageElement.style.color = 'blue';
       serverInfoContainer.style.display = 'block';
       const fourMinutesAgo = new Date(Date.now() - 1000 * 60 * 4);
       lastUpdateTimeElement.innerHTML = `Last Updated: ${fourMinutesAgo.toLocaleString()}`;
+      updateButton.textContent = "サーバー情報を更新する";
     })
     .catch(error => {
+      updateButton.textContent = "サーバーを監視中...";
       const fourMinutesAgo = new Date(Date.now() - 1000 * 60 * 4);
       const errorMessage = error.message + `(${fourMinutesAgo.toLocaleString()})`;
       serverNameElement.innerHTML = `<strong style="color: blue; font-size: 20px;">ウィジェットが無効化されたか、サーバーは削除されました</strong> (${fourMinutesAgo.toLocaleString()})`;
