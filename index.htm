@@ -144,7 +144,7 @@ serverNameElement.innerHTML = serverStatusMessage;
       updateButton.textContent = "サーバー情報を更新する";
     })
     .catch(error => {
-      updateButton.textContent = "サーバーを監視中...";
+     
       const fourMinutesAgo = new Date(Date.now() - 1000 * 60 * 4);
       const errorMessage = error.message + `(${fourMinutesAgo.toLocaleString()})`;
       serverNameElement.innerHTML = `<strong style="color: blue; font-size: 20px;">ウィジェットが無効化されたか、サーバーは削除されました</strong> (${fourMinutesAgo.toLocaleString()})`;
